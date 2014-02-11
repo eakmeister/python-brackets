@@ -3,14 +3,7 @@ Scans the previous frame, and raises a SyntaxError if it finds any indented
 blocks not ending with "pass".
 """
 import inspect
-
-PASS = 0
-CURLY = 1
-
-STYLES = {
-    PASS : 'style_pass',
-    CURLY : 'style_curly'
-}
+import styles
 
 def get_indent(line):
     spaces = 0
@@ -33,12 +26,13 @@ def raise_exception(last_line, line_no, file_name):
     e.text = last_line
     raise e
 
-def enable(style = PASS):
-    indent_change = __import__(STYLES[style], globals(), locals(), ['indent_change'], -1).indent_change
+def enable(style = 0):
+    indent_change = styles.styles[style]
 
     # get the previous stack frame
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
+    source = inspect.getsourcelines(frame[0])[0]
 
     # target will be None if this is called from a python shell, for example
     expected_indent = get_indent(source[0])

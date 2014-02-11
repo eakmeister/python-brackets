@@ -29,7 +29,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
     def test_curly_good(self): #{
         try: #{
-            force_brackets.enable(force_brackets.CURLY)
+            force_brackets.enable(1)
             success = True
         #}
         except SyntaxError, e: #{
@@ -42,7 +42,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
     def test_curly_bad(self):
         try:
-            force_brackets.enable(force_brackets.CURLY)
+            force_brackets.enable(1)
             success = False
         except SyntaxError:
             success = True
