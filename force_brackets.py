@@ -32,7 +32,7 @@ def enable(style = 0):
     # get the previous stack frame
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
-    source = inspect.getsourcelines(frame[0])[0]
+    source = inspect.getsourcelines(module)[0]
 
     # target will be None if this is called from a python shell, for example
     expected_indent = get_indent(source[0])
@@ -51,10 +51,14 @@ def enable(style = 0):
             comment = ''
 
         change = indent_change(line, indent, comment)
+        print line, change, indent, expected_indent
 
         if (change < 0 and not indent in (expected_indent, expected_indent + change)) \
                 or (change >= 0 and indent != expected_indent):
             raise_exception(line, frame[2], frame[1])
 
         expected_indent += change
+    
+    if expected_indent != 0:
+        raise_exception(source[-1], frame[2], frame[1])
 
