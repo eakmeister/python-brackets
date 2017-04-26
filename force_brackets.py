@@ -51,14 +51,13 @@ def enable(style = 0):
             comment = ''
 
         change = indent_change(line, indent, comment)
-        print line, change, indent, expected_indent
 
         if (change < 0 and not indent in (expected_indent, expected_indent + change)) \
                 or (change >= 0 and indent != expected_indent):
-            raise_exception(line, frame[2], frame[1])
+            raise_exception(line, line_no, frame[1])
 
         expected_indent += change
     
     if expected_indent != 0:
-        raise_exception(source[-1], frame[2], frame[1])
+        raise_exception(source[-1], line_no, frame[1])
 
